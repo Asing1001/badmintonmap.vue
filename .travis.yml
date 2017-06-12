@@ -1,7 +1,10 @@
+dist: trusty
+sudo: false
 language: node_js
 node_js: '6.11.0'
 cache: yarn
 before_script:
+  - jdk_switcher use oraclejdk8
   - git config --global user.name "Andy Chen"
   - git config --global user.email "shinningstar1001@gmail.com"
   - git clone --branch gh-pages https://${GH_REF} dist
