@@ -33,6 +33,11 @@ module.exports = {
         browserName: 'chrome',
         javascriptEnabled: true,
         acceptSslCerts: true
+      },
+      cli_args: {
+        headless: '',
+        'disable-gpu': '',
+        'remote-debugging-port': 9222
       }
     },
 
