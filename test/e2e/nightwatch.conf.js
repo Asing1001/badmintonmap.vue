@@ -32,12 +32,10 @@ module.exports = {
       desiredCapabilities: {
         browserName: 'chrome',
         javascriptEnabled: true,
-        acceptSslCerts: true
-      },
-      cli_args: {
-        headless: '',
-        'disable-gpu': '',
-        'remote-debugging-port': 9222
+        acceptSslCerts: true,
+        'chromeOptions': {
+          'args': ['headless', 'no-sandbox', 'disable-gpu']
+        }
       }
     },
 
