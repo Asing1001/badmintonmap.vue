@@ -1,4 +1,4 @@
-# badmintonmap.vue
+# Badmintonmap.vue
 
 > Front-end for badmintonmap
 
