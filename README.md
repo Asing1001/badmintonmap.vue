@@ -1,0 +1,1 @@
+badmintonmap.vue
