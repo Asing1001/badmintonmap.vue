@@ -3,6 +3,8 @@ sudo: false
 language: node_js
 node_js: '6.11.0'
 cache: yarn
+before_install:
+  - sudo apt-get install chromium-chromedriver
 before_script:
   - jdk_switcher use oraclejdk8
   - git config --global user.name "Andy Chen"
