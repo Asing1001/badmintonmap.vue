@@ -12,10 +12,10 @@ before_script:
   - git clone --branch package.${TRAVIS_BRANCH} https://${GH_REF} ${PACKAGE_FOLDER}
 
 script:
+  - npm run build
   - npm test
 
 after_success:
-  - npm run build
   - cd ${PACKAGE_FOLDER}
   - rm -rf *
   - cp ../dist/* .
