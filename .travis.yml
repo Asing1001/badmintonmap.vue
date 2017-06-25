@@ -18,8 +18,7 @@ script:
 after_success:
   - cd ${PACKAGE_FOLDER}
   - rm -rf *
-  - cp ../dist/* .
-  - cp .gitignore .
+  - cp -r ../dist/* .
   - find .
   - git add --all .
   - git commit --message "${TRAVIS_COMMIT_MESSAGE} [ci skip]"
