@@ -9,7 +9,7 @@ before_script:
   - jdk_switcher use oraclejdk8
   - git config --global user.name "Andy Chen"
   - git config --global user.email "shinningstar1001@gmail.com"
-  - git clone --branch packages https://${GH_REF} ${PACKAGE_FOLDER}
+  - git clone --branch package.${TRAVIS_BRANCH} https://${GH_REF} ${PACKAGE_FOLDER}
 
 script:
   - npm test
@@ -23,7 +23,7 @@ after_success:
   - find .
   - git add --all .
   - git commit --message "${TRAVIS_COMMIT_MESSAGE} [ci skip]"
-  - git push --force "https://${GH_TOKEN}@${GH_REF}" packages:packages
+  - git push --force "https://${GH_TOKEN}@${GH_REF}" package.${TRAVIS_BRANCH}:package.${TRAVIS_BRANCH}
 
 env:
   global:
