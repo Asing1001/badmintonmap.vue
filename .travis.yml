@@ -9,19 +9,23 @@ before_script:
   - jdk_switcher use oraclejdk8
   - git config --global user.name "Andy Chen"
   - git config --global user.email "shinningstar1001@gmail.com"
-  - git clone --branch gh-pages https://${GH_REF} dist
+  - git clone --branch packages https://${GH_REF} ${PACKAGE_FOLDER}
 
 script:
   - npm test
 
 after_success:
   - npm run build
+  - cd ${PACKAGE_FOLDER}
+  - rm -rf *
+  - cp ../dist/* .
+  - cp .gitignore .
+  - find .
   - git add --all .
-  - git commit --message "Automatically update from travis-ci"
-  - git push --quiet "https://${GH_TOKEN}@${GH_REF}" gh-pages:gh-pages
+  - git commit --message "${TRAVIS_COMMIT_MESSAGE} [ci skip]"
+  - git push --force "https://${GH_TOKEN}@${GH_REF}" packages:packages
 
-# Note: you should set Environment Variables here or 'Settings' on travis-ci.org
 env:
   global:
     - GH_REF: github.com/Asing1001/badmintonmap.vue.git
-    # - GH_TOKEN: 'Your GitHub Personal access tokens, via https://github.com/settings/tokens'
+    - PACKAGE_FOLDER: mypackages
