@@ -1,0 +1,14 @@
+{
+  "name": "badmintonmap.vue",
+  "version": "1.0.0",
+  "description": "Front-end for badmintonmap",
+  "author": "AndyChen <shinningstar1001@gmail.com>, JosephTsai <mmx362003@gmail.com>",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "connect": "^3.6.2",
+    "serve-static": "^1.12.3"
+  }
+}
