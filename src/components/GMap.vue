@@ -23,7 +23,7 @@ export default {
   name: 'app',
   async created () {
     try {
-      const res = await fetch('/api/locationInfo')
+      const res = await fetch(process.env.API_HOST + '/api/locationinfolist')
       const locationInfo = await res.json()
       this.markers = locationInfo.map(({ lng, lat, name, address }) => {
         return {
