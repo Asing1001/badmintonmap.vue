@@ -31,6 +31,10 @@ export default {
           infoText: name
         }
       })
+      navigator.geolocation.getCurrentPosition(
+        ({ coords: { latitude: lat, longitude: lng } }) => {
+          this.center = { lat, lng }
+        })
     } catch (ex) {
 
     }
@@ -51,7 +55,7 @@ export default {
         }
       },
       center: { lat: 23.6052631, lng: 120.1412734 },
-      zoom: 7,
+      zoom: 13,
       markers: [{
         position: {
           lat: 25.0781209,
