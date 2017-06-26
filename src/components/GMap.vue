@@ -2,7 +2,9 @@
   <div id="app">
     <gmap-map class="gmap" :center="center" :zoom="zoom">
       <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" :content="infoContent" @closeclick="infoWinOpen=false"></gmap-info-window>
-      <gmap-marker v-for="(marker,index) in markers" @click="clickMarker(marker, index)" :key="index" :position="marker.position" :clickable="true"></gmap-marker>
+      <gmap-cluster>
+        <gmap-marker v-for="(marker,index) in markers" @click="clickMarker(marker, index)" :key="index" :position="marker.position" :clickable="true"></gmap-marker>
+      </gmap-cluster>
     </gmap-map>
   </div>
 </template>
