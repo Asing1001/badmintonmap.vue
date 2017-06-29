@@ -1,6 +1,6 @@
 # Badmintonmap.vue
 
-> Front-end for badmintonmap
+> Front-end for badmintonmap, [backend repo here](https://github.com/Josephmtsai/badmintonmap)
 
 ## Build Setup
 
