@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 // import Hello from '@/components/Hello'
-import map from '@/components/map'
+// import Map from '@/components/Map'
+import InfoTabs from '@/components/InfoTabs'
 
 Vue.use(Router)
 
@@ -14,8 +15,14 @@ export default new Router({
     // },
     {
       path: '/',
-      name: 'map',
-      component: map
+      name: 'infoTab',
+      component: InfoTabs
+      // children: [
+      //   {
+      //     path: 'map',
+      //     component: Map
+      //   }
+      // ]
     }
   ]
 })

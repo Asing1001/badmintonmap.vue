@@ -1,0 +1,112 @@
+<template>
+  <div id="app" class="col-12">
+    <pulse-loader :loading="loading" style="margin-top:50px"></pulse-loader>
+    <div v-if="!loading">
+      <b-form inline>
+        <b-form-checkbox v-for="(weekDay, index) in weekDaysOptions" :key="index" v-model="selectedDays" :value="weekDay.value">{{weekDay.label}}</b-form-checkbox>
+        <b-form-select v-model="selectedTime" :options="startTimeOptions">
+        </b-form-select>
+      </b-form>
+      <b-tabs small v-if="!loading">
+        <b-tab title="General map" active>
+          <bad-map class="gmap" :badmintonInfos="getBadmintonInfos()" :center="currentLocation"></bad-map>
+        </b-tab>
+        <b-tab title="List Location Info">
+          <bad-table :badmintonInfos="getBadmintonInfos()"></bad-table>
+        </b-tab>
+      </b-tabs>
+    </div>
+  </div>
+</template>
+
+<script>
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+import BadMap from '@/components/BadMap'
+import BadTable from '@/components/BadTable'
+
+export default {
+  name: 'app',
+  components: {
+    PulseLoader,
+    BadMap,
+    BadTable
+  },
+  async created () {
+    try {
+      const res = await Promise.all([
+        fetch(process.env.API_HOST + '/api/locationinfolist'),
+        fetch(process.env.API_HOST + '/api/badmintoninfolist')]
+      )
+      const locationInfos = await res[0].json()
+      const badmintonInfos = await res[1].json()
+      this.badmintonInfos = badmintonInfos.map(badmintonInfo => {
+        badmintonInfo.location = locationInfos.find(({ name }) => badmintonInfo.location === name)
+        return badmintonInfo
+      })
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(({ coords: { latitude: lat, longitude: lng } }) => {
+          this.currentLocation = { lat, lng }
+          this.badmintonInfos = this.badmintonInfos.map(badmintonInfo => {
+            const { location: { position: { lng: lng1, lat: lat1 } } } = badmintonInfo
+            badmintonInfo.distance = getDistanceInKM(lng, lat, lng1, lat1)
+            return badmintonInfo
+          })
+        })
+      }
+      this.loading = false
+    } catch (ex) {
+      console.error(ex)
+    }
+  },
+  data () {
+    return {
+      currentLocation: { lat: 25.079613, lng: 121.556082 },
+      loading: true,
+      badmintonInfos: [],
+      weekDays: [],
+      selectedDays: [0, 1, 2, 3, 4, 5, 6],
+      selectedTime: '',
+      startTimeOptions: [
+        { text: '整天', value: '' },
+        { text: '到中午十二點', value: '12' },
+        { text: '中午到下午六點', value: '18' },
+        { text: '六點後', value: '24' }
+      ],
+      weekDaysOptions: [{ 'label': '星期日', 'value': 0 }, { 'label': '星期一', 'value': 1 }, { 'label': '星期二', 'value': 2 }, { 'label': '星期三', 'value': 3 }, { 'label': '星期四', 'value': 4 }, { 'label': '星期五', 'value': 5 }, { 'label': '星期六', 'value': 6 }]
+    }
+  },
+  methods: {
+    getBadmintonInfos () {
+      return this.badmintonInfos
+        .filter(({ weekDayInt, startHour }) => {
+          const inSelectedDays = this.selectedDays.indexOf(weekDayInt) !== -1
+          const inSelectedTime = !this.selectedTime || startHour < this.selectedTime * 1
+          return inSelectedDays && inSelectedTime
+        })
+    }
+  }
+}
+
+function getDistanceInKM (lon1, lat1, lon2, lat2) {
+  var R = 6371 // Radius of the earth in km
+  var dLat = getRadians(lat2 - lat1)  // Javascript functions in radians
+  var dLon = getRadians(lon2 - lon1)
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(getRadians(lat1)) * Math.cos(getRadians(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2)
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  var d = R * c // Distance in km
+  return Math.round(d * 10) / 10
+}
+
+function getRadians (num) {
+  return (num) * Math.PI / 180
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.gmap {
+  height: 600px;
+}
+</style>

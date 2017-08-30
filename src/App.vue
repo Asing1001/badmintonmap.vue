@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header>
-      <span>Vue.js PWA</span>
+      <span>Badminton map - 羽球地圖</span>
     </header>
     <main>
       <router-view></router-view>
@@ -29,7 +29,7 @@ body {
 
 main {
   text-align: center;
-  margin-top: 40px;
+  margin-top: 1em;
 }
 
 header {
