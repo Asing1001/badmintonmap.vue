@@ -1,4 +1,4 @@
-# Badmintonmap.vue [![Build Status](https://travis-ci.org/Josephmtsai/badmintonmap.svg?branch=master)](https://travis-ci.org/Josephmtsai/badmintonmap)
+# Badmintonmap.vue [![Build Status](https://travis-ci.org/Asing1001/badmintonmap.vue.svg?branch=master)](https://travis-ci.org/Asing1001/badmintonmap.vue)
 
 > Front-end for badmintonmap, [backend repo here](https://github.com/Josephmtsai/badmintonmap)
 
