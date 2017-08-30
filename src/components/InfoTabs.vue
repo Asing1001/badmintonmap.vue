@@ -63,14 +63,13 @@ export default {
       currentLocation: { lat: 25.079613, lng: 121.556082 },
       loading: true,
       badmintonInfos: [],
-      weekDays: [],
       selectedDays: [0, 1, 2, 3, 4, 5, 6],
       selectedTime: '',
       startTimeOptions: [
         { text: '整天', value: '' },
-        { text: '到中午十二點', value: '12' },
-        { text: '中午到下午六點', value: '18' },
-        { text: '六點後', value: '24' }
+        { text: '中午十二點前', value: { from: 0, to: 12 } },
+        { text: '中午至下午六點', value: { from: 12, to: 18 } },
+        { text: '晚上六點後', value: { from: 18, to: 24 } }
       ],
       weekDaysOptions: [{ 'label': '星期日', 'value': 0 }, { 'label': '星期一', 'value': 1 }, { 'label': '星期二', 'value': 2 }, { 'label': '星期三', 'value': 3 }, { 'label': '星期四', 'value': 4 }, { 'label': '星期五', 'value': 5 }, { 'label': '星期六', 'value': 6 }]
     }
@@ -80,7 +79,7 @@ export default {
       return this.badmintonInfos
         .filter(({ weekDayInt, startHour }) => {
           const inSelectedDays = this.selectedDays.indexOf(weekDayInt) !== -1
-          const inSelectedTime = !this.selectedTime || startHour < this.selectedTime * 1
+          const inSelectedTime = !this.selectedTime || (startHour >= this.selectedTime.from && startHour < this.selectedTime.to)
           return inSelectedDays && inSelectedTime
         })
     }

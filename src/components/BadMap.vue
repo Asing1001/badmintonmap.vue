@@ -5,7 +5,7 @@
         <gmap-marker v-for="(location,index) in getLocations()" @click="showModal(location)" :key="index" :position="location.position" :clickable="true"></gmap-marker>
       </gmap-cluster>
     </gmap-map>
-    <b-modal ref="modal" title="Location" @ok="handleOk" ok-only=true size="lg">
+    <b-modal ref="modal" title="Location" @ok="handleOk" ok-only size="lg">
       <bad-table :badmintonInfos="selectedBadmintonInfos"></bad-table>
     </b-modal>
   </div>
