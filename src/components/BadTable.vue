@@ -13,17 +13,6 @@
 </template>
 
 <script>
-import * as VueGoogleMaps from 'vue2-google-maps'
-import Vue from 'vue'
-
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: 'AIzaSyBW6jkW1QIMpjw5SUIytKmuQ40emkWLgM8',
-    v: '3'
-    // libraries: 'places', //// If you need to use place input
-  }
-})
-
 export default {
   props: ['badmintonInfos'],
   data () {
@@ -47,15 +36,6 @@ export default {
     getLocations () {
       const locations = this.badmintonInfos.map(({ location }) => location)
       return [...new Set(locations)]
-    },
-    closeModal (e) {
-      return e.cancel()
-    },
-    showModal ({ name }) {
-      this.selectedBadmintonInfos = this.badmintonInfos.filter(({ location }) => {
-        return location.name === name
-      })
-      this.$refs.modal.show()
     }
   }
 }
