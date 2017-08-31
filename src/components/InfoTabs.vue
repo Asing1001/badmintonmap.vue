@@ -43,6 +43,7 @@ export default {
         badmintonInfo.location = locationInfos.find(({ name }) => badmintonInfo.location === name)
         return badmintonInfo
       })
+      this.loading = false
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(({ coords: { latitude: lat, longitude: lng } }) => {
           this.currentLocation = { lat, lng }
@@ -52,10 +53,9 @@ export default {
             return badmintonInfo
           })
         })
-      }
-      this.loading = false
+      }      
     } catch (ex) {
-      console.error(ex)
+      alert(ex)
     }
   },
   data () {
