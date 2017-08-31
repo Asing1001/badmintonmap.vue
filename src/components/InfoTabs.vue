@@ -2,17 +2,17 @@
   <div id="app" class="col-12">
     <pulse-loader :loading="loading" style="margin-top:50px"></pulse-loader>
     <div v-if="!loading">
-      <b-form inline>
-        <b-form-checkbox v-for="(weekDay, index) in weekDaysOptions" :key="index" v-model="selectedDays" :value="weekDay.value">{{weekDay.label}}</b-form-checkbox>
-        <b-form-select v-model="selectedTime" :options="startTimeOptions">
+      <b-form inline style="margin-bottom:.5em">
+        <b-form-checkbox @change="setFilteredBadmintonInfos" v-for="(weekDay, index) in weekDaysOptions" :key="index" v-model="selectedDays" :value="weekDay.value">{{weekDay.label}}</b-form-checkbox>
+        <b-form-select @input="setFilteredBadmintonInfos" v-model="selectedTime" :options="startTimeOptions">
         </b-form-select>
       </b-form>
       <b-tabs small v-if="!loading">
         <b-tab title="General map" active>
-          <bad-map class="gmap" :badmintonInfos="getBadmintonInfos()" :center="currentLocation"></bad-map>
+          <bad-map class="gmap" :badmintonInfos="filteredBadmintonInfos" :center="currentLocation"></bad-map>
         </b-tab>
         <b-tab title="List Location Info">
-          <bad-table :badmintonInfos="getBadmintonInfos()"></bad-table>
+          <bad-table :badmintonInfos="filteredBadmintonInfos"></bad-table>
         </b-tab>
       </b-tabs>
     </div>
@@ -33,27 +33,25 @@ export default {
   },
   async created () {
     try {
-      const res = await Promise.all([
+      const responses = await Promise.all([
         fetch(process.env.API_HOST + '/api/locationinfolist'),
         fetch(process.env.API_HOST + '/api/badmintoninfolist')]
       )
-      const locationInfos = await res[0].json()
-      const badmintonInfos = await res[1].json()
-      this.badmintonInfos = badmintonInfos.map(badmintonInfo => {
+      const [locationInfos, badmintonInfos] = await Promise.all(responses.map(res => res.json()))
+      this.filteredBadmintonInfos = this.badmintonInfos = badmintonInfos.map(badmintonInfo => {
         badmintonInfo.location = locationInfos.find(({ name }) => badmintonInfo.location === name)
         return badmintonInfo
       })
       this.loading = false
-      if (navigator.geolocation) {
+      if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(({ coords: { latitude: lat, longitude: lng } }) => {
           this.currentLocation = { lat, lng }
-          this.badmintonInfos = this.badmintonInfos.map(badmintonInfo => {
+          this.badmintonInfos.forEach(badmintonInfo => {
             const { location: { position: { lng: lng1, lat: lat1 } } } = badmintonInfo
             badmintonInfo.distance = getDistanceInKM(lng, lat, lng1, lat1)
-            return badmintonInfo
           })
         })
-      }      
+      }
     } catch (ex) {
       alert(ex)
     }
@@ -63,6 +61,7 @@ export default {
       currentLocation: { lat: 25.079613, lng: 121.556082 },
       loading: true,
       badmintonInfos: [],
+      filteredBadmintonInfos: [],
       selectedDays: [0, 1, 2, 3, 4, 5, 6],
       selectedTime: '',
       startTimeOptions: [
@@ -75,8 +74,8 @@ export default {
     }
   },
   methods: {
-    getBadmintonInfos () {
-      return this.badmintonInfos
+    setFilteredBadmintonInfos () {
+      this.filteredBadmintonInfos = this.badmintonInfos
         .filter(({ weekDayInt, startHour }) => {
           const inSelectedDays = this.selectedDays.indexOf(weekDayInt) !== -1
           const inSelectedTime = !this.selectedTime || (startHour >= this.selectedTime.from && startHour < this.selectedTime.to)
