@@ -42,7 +42,12 @@ export default {
         badmintonInfo.location = locationInfos.find(({ name }) => badmintonInfo.location === name)
         return badmintonInfo
       })
+      var today = new Date()
       this.loading = false
+      this.todayWeekday = today.getDay()
+      // default 2 days
+      this.selectedDays.push(this.todayWeekday)
+      this.selectedDays.push(this.todayWeekday + 1 > 6 ? 0 : this.todayWeekday + 1)
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(({ coords: { latitude: lat, longitude: lng } }) => {
           this.currentLocation = { lat, lng }
@@ -60,9 +65,10 @@ export default {
     return {
       currentLocation: { lat: 25.079613, lng: 121.556082 },
       loading: true,
+      todayWeekday: 1,
       badmintonInfos: [],
       filteredBadmintonInfos: [],
-      selectedDays: [0, 1, 2, 3, 4, 5, 6],
+      selectedDays: [],
       selectedTime: '',
       startTimeOptions: [
         { text: '整天', value: '' },
