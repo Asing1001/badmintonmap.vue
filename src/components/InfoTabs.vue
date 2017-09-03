@@ -3,7 +3,7 @@
     <pulse-loader :loading="loading" style="margin-top:50px"></pulse-loader>
     <div v-if="!loading">
       <b-form inline style="margin-bottom:.5em">
-        <b-form-checkbox @change="setFilteredBadmintonInfos" v-for="(weekDay, index) in weekDaysOptions" :key="index" v-model="selectedDays" :value="weekDay.value">{{weekDay.label}}</b-form-checkbox>
+        <b-form-checkbox @change="setFilteredBadmintonInfos" v-for="(weekDay, index) in weekDaysOptions" :key="index" v-model="selectedDays"   :value="weekDay.value">{{weekDay.label}}</b-form-checkbox>
         <b-form-select @input="setFilteredBadmintonInfos" v-model="selectedTime" :options="startTimeOptions">
         </b-form-select>
       </b-form>
@@ -57,6 +57,7 @@ export default {
           })
         })
       }
+      this.setFilteredBadmintonInfos()
     } catch (ex) {
       alert(ex)
     }
@@ -87,6 +88,16 @@ export default {
           const inSelectedTime = !this.selectedTime || (startHour >= this.selectedTime.from && startHour < this.selectedTime.to)
           return inSelectedDays && inSelectedTime
         })
+    }
+  },
+  watch: {
+    currentLocation: function (val) {
+      this.currentLocation = val
+      var self = this
+      this.badmintonInfos.forEach(badmintonInfo => {
+        badmintonInfo.distance = getDistanceInKM(self.currentLocation['lng'], self.currentLocation['lat'], badmintonInfo.lng, badmintonInfo.lat)
+      })
+      this.setFilteredBadmintonInfos()
     }
   }
 }
