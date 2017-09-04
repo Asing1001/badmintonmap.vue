@@ -51,11 +51,8 @@ export default {
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(({ 'coords': { 'latitude': lat, 'longitude': lng } }) => {
           this.currentLocation = { lat, lng }
-          this.badmintonInfos.forEach(badmintonInfo => {
-            const { 'location': { 'position': { 'lng': lng1, 'lat': lat1 } } } = badmintonInfo
-            badmintonInfo.distance = getDistanceInKM(lng, lat, lng1, lat1)
-          })
         })
+        this.locationUpdate(this.currentLocation)
       }
       this.setFilteredBadmintonInfos()
     } catch (ex) {
@@ -91,7 +88,6 @@ export default {
     },
     locationUpdate (val) {
       var self = this
-      console.log('asdsd')
       this.badmintonInfos.forEach(badmintonInfo => {
         badmintonInfo.distance = getDistanceInKM(self.currentLocation['lng'], self.currentLocation['lat'], badmintonInfo.location.position.lng, badmintonInfo.location.position.lat)
       })
