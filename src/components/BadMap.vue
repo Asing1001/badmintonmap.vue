@@ -55,6 +55,7 @@ export default {
     mapRclicked (mouseArgs) {
       this.center.lat = mouseArgs.latLng.lat()
       this.center.lng = mouseArgs.latLng.lng()
+      this.$emit('update', this.center)
     }
   }
 }

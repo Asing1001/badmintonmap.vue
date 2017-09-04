@@ -9,7 +9,7 @@
       </b-form>
       <b-tabs small v-if="!loading">
         <b-tab title="General map" active>
-          <bad-map class="gmap" :badmintonInfos="filteredBadmintonInfos" :center="currentLocation"></bad-map>
+          <bad-map class="gmap" :badmintonInfos="filteredBadmintonInfos" :center="currentLocation" @update="locationUpdate"></bad-map>
         </b-tab>
         <b-tab title="List Location Info">
           <bad-table :badmintonInfos="filteredBadmintonInfos"></bad-table>
@@ -49,10 +49,10 @@ export default {
       this.selectedDays.push(this.todayWeekday)
       this.selectedDays.push(this.todayWeekday + 1 > 6 ? 0 : this.todayWeekday + 1)
       if ('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition(({ coords: { latitude: lat, longitude: lng } }) => {
+        navigator.geolocation.getCurrentPosition(({ 'coords': { 'latitude': lat, 'longitude': lng } }) => {
           this.currentLocation = { lat, lng }
           this.badmintonInfos.forEach(badmintonInfo => {
-            const { location: { position: { lng: lng1, lat: lat1 } } } = badmintonInfo
+            const { 'location': { 'position': { 'lng': lng1, 'lat': lat1 } } } = badmintonInfo
             badmintonInfo.distance = getDistanceInKM(lng, lat, lng1, lat1)
           })
         })
@@ -88,14 +88,12 @@ export default {
           const inSelectedTime = !this.selectedTime || (startHour >= this.selectedTime.from && startHour < this.selectedTime.to)
           return inSelectedDays && inSelectedTime
         })
-    }
-  },
-  watch: {
-    currentLocation: function (val) {
-      this.currentLocation = val
+    },
+    locationUpdate (val) {
       var self = this
+      console.log('asdsd')
       this.badmintonInfos.forEach(badmintonInfo => {
-        badmintonInfo.distance = getDistanceInKM(self.currentLocation['lng'], self.currentLocation['lat'], badmintonInfo.lng, badmintonInfo.lat)
+        badmintonInfo.distance = getDistanceInKM(self.currentLocation['lng'], self.currentLocation['lat'], badmintonInfo.location.position.lng, badmintonInfo.location.position.lat)
       })
       this.setFilteredBadmintonInfos()
     }
