@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="col-12">
     <pulse-loader :loading="loading" style="margin-top:50px"></pulse-loader>
-    <div v-if="!loading">
+    <div v-if="!loading && isMobileDevice== false">
       <b-form inline style="margin-bottom:.5em">
         <b-form-checkbox @change="setFilteredBadmintonInfos" v-for="(weekDay, index) in weekDaysOptions" :key="index" v-model="selectedDays"   :value="weekDay.value">{{weekDay.label}}</b-form-checkbox>
         <b-form-select @input="setFilteredBadmintonInfos" v-model="selectedTime" :options="startTimeOptions">

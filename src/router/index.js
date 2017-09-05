@@ -11,12 +11,6 @@ export default new Router({
       path: '/',
       name: 'infoTab',
       component: InfoTabs
-      // children: [
-      //   {
-      //     path: 'map',
-      //     component: Map
-      //   }
-      // ]
     }
   ]
 })
