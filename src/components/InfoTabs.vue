@@ -7,12 +7,24 @@
         <b-form-select @input="setFilteredBadmintonInfos" v-model="selectedTime" :options="startTimeOptions">
         </b-form-select>
       </b-form>
-      <b-tabs small v-if="!loading">
+      <b-tabs small v-if="!loading && isMobileDevice== false">
         <b-tab title="General map" active>
           <bad-map class="gmap" :badmintonInfos="filteredBadmintonInfos" :center="currentLocation" @update="locationUpdate"></bad-map>
         </b-tab>
         <b-tab title="List Location Info">
           <bad-table :badmintonInfos="filteredBadmintonInfos"></bad-table>
+        </b-tab>
+      </b-tabs>
+      <b-tabs small v-if="!loading && isMobileDevice">
+
+        <b-tab title="List Location Info" active>
+          <bad-table :badmintonInfos="filteredBadmintonInfos"></bad-table>
+        </b-tab>
+        <b-tab title="Near Location">
+          
+        </b-tab>
+        <b-tab title="General map">
+          <bad-map class="gmap" :badmintonInfos="filteredBadmintonInfos" :center="currentLocation" @update="locationUpdate"></bad-map>
         </b-tab>
       </b-tabs>
     </div>
@@ -23,6 +35,7 @@
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import BadMap from '@/components/BadMap'
 import BadTable from '@/components/BadTable'
+import MobileDetect from 'mobile-detect'
 
 export default {
   name: 'app',
@@ -33,6 +46,8 @@ export default {
   },
   async created () {
     try {
+      var md = new MobileDetect(window.navigator.userAgent)
+      this.isMobileDevice = md.mobile() != null
       const responses = await Promise.all([
         fetch(process.env.API_HOST + '/api/locationinfolist'),
         fetch(process.env.API_HOST + '/api/badmintoninfolist')]
@@ -74,7 +89,8 @@ export default {
         { text: '中午至下午六點', value: { from: 12, to: 18 } },
         { text: '晚上六點後', value: { from: 18, to: 24 } }
       ],
-      weekDaysOptions: [{ 'label': '星期日', 'value': 0 }, { 'label': '星期一', 'value': 1 }, { 'label': '星期二', 'value': 2 }, { 'label': '星期三', 'value': 3 }, { 'label': '星期四', 'value': 4 }, { 'label': '星期五', 'value': 5 }, { 'label': '星期六', 'value': 6 }]
+      weekDaysOptions: [{ 'label': '星期日', 'value': 0 }, { 'label': '星期一', 'value': 1 }, { 'label': '星期二', 'value': 2 }, { 'label': '星期三', 'value': 3 }, { 'label': '星期四', 'value': 4 }, { 'label': '星期五', 'value': 5 }, { 'label': '星期六', 'value': 6 }],
+      isMobileDevice: false
     }
   },
   methods: {
