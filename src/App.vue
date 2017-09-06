@@ -3,7 +3,7 @@
     <header>
       <span v-if="isMobileDevice ==false" >Badminton map - 羽球地圖</span>
       <b-navbar style="z-index:300" v-if="isMobileDevice" type="dark" variant="info">
-        Badminton map - 羽球地圖 
+        Badminton map - 羽球地圖
         <b-nav-toggle target="nav_collapse"></b-nav-toggle>
         <b-collapse is-nav id="nav_collapse">
           <b-nav is-nav-bar>
@@ -17,7 +17,7 @@
 
     </header>
     <main>
-      <b-modal ref="dateSelector" title="日期" @ok="handleOk" ok-only size="sm">
+      <b-modal ref="dateSelector" title="日期" ok-only size="sm">
         <mobile-select-time :weekDaysOptions="weekDaysOptions" :selectedDays="selectedDays" :startTimeOptions="startTimeOptions" :selectedTime="selectedTime" > </mobile-select-time>
       </b-modal>
       <router-view></router-view>
@@ -95,6 +95,7 @@ header {
   margin: 0;
   height: 56px;
   background-color: #4fc08d;
+  padding: 0 16px 0 24px;
   color: #ffffff;
 }
 
