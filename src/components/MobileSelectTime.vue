@@ -1,19 +1,23 @@
 <template>
-  <div>
-    <b-modal ref="modal" title="日期" @ok="handleOk" ok-only size="md">
-      {{weekDaysOptions}}
-    </b-modal>
-    asdasdsds
-    {{showSelectTime}}
+  <div role="group" class="custom-controls-stacked" size="sm">
+    <b-form-checkbox v-for="(weekDay, index) in weekDaysOptions" :key="index" v-model="selectedDays"   :value="weekDay.value">{{weekDay.label}}</b-form-checkbox>
+    <b-form-select  v-model="selectedTime" :options="startTimeOptions"></b-form-select>
   </div>
 </template>
 
 
 <script>
-
+import globalevent from '../eventbus'
 export default {
-  props: ['weekDaysOptions', 'selectedDays', 'showSelectTime'],
+  props: ['weekDaysOptions', 'selectedDays', 'selectedTime', 'startTimeOptions'],
   components: {
+  },
+  created () {
+    try {
+      this.changeTimeSelector()
+    } catch (ex) {
+      alert(ex)
+    }
   },
   data () {
     return {
@@ -26,11 +30,9 @@ export default {
     },
     showModal () {
       this.$refs.modal.show()
-    }
-  },
-  watch: {
-    showSelectTime: function (val) {
-      val ? this.$refs.modal.show() : this.$refs.modal.hide()
+    },
+    changeTimeSelector () {
+      globalevent.$emit('test', {'selectedTime': this.selectedTime})
     }
   }
 }
