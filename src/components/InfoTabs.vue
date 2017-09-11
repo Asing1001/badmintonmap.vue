@@ -4,8 +4,8 @@
     <div v-if="!loading">
       <!--Website-->
       <b-form inline v-if="isMobileDevice== false" style="margin-bottom:.5em">
-        <b-form-checkbox @change="setFilteredBadmintonInfos" v-for="(weekDay, index) in weekDaysOptions" :key="index" v-model="selectedDays"   :value="weekDay.value">{{weekDay.label}}</b-form-checkbox>
-        <b-form-select @input="setFilteredBadmintonInfos" v-model="selectedTime" :options="startTimeOptions">
+        <b-form-checkbox v-for="(weekDay, index) in weekDaysOptions" :key="index" v-model="selectedDays"   :value="weekDay.value">{{weekDay.label}}</b-form-checkbox>
+        <b-form-select  v-model="selectedTime" :options="startTimeOptions">
         </b-form-select>
       </b-form>
       <b-tabs small v-if="isMobileDevice== false">
@@ -125,6 +125,11 @@ export default {
       })
       this.setFilteredBadmintonInfos()
     }
+  },
+  watch: {
+    selectedDays: 'setFilteredBadmintonInfos',
+    selectedTime: 'setFilteredBadmintonInfos'
+
   }
 }
 
