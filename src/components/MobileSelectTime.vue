@@ -7,32 +7,45 @@
 
 
 <script>
-import globalevent from '../eventbus'
+import { mapActions } from 'vuex'
 export default {
-  props: ['weekDaysOptions', 'selectedDays', 'selectedTime', 'startTimeOptions'],
+  props: ['weekDaysOptions', 'startTimeOptions'],
   components: {
-  },
-  created () {
-    try {
-      this.changeTimeSelector()
-    } catch (ex) {
-      alert(ex)
-    }
   },
   data () {
     return {
       zoom: 15
     }
   },
+  computed: {
+    selectedDays: {
+      get () {
+        return this.$store.state.selectedDays
+      },
+      set (value) {
+        this.changeSelectedDays(value)
+      }
+    },
+    selectedTime: {
+      get () {
+        return this.$store.state.selectedTime
+      },
+      set (value) {
+        this.changeSelectDaysTime(value)
+      }
+    }
+
+  },
   methods: {
+    ...mapActions([
+      'changeSelectedDays',
+      'changeSelectDaysTime'
+    ]),
     handleOk () {
       this.$refs.modal.hide()
     },
     showModal () {
       this.$refs.modal.show()
-    },
-    changeTimeSelector () {
-      globalevent.$emit('test', {'selectedTime': this.selectedTime})
     }
   }
 }

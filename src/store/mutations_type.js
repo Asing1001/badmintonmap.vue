@@ -1,0 +1,2 @@
+export const SELECTEDDAYS = 'SELECTEDDAYS'
+export const SELECTTIEME = 'SELECTTIEME'

@@ -8,7 +8,7 @@
         <b-form-select @input="setFilteredBadmintonInfos" v-model="selectedTime" :options="startTimeOptions">
         </b-form-select>
       </b-form>
-      <b-tabs small v-if="!loading && isMobileDevice== false">
+      <b-tabs small v-if="isMobileDevice== false">
         <b-tab title="General map" active>
           <bad-map class="gmap" :badmintonInfos="filteredBadmintonInfos" :center="currentLocation" @update="locationUpdate"></bad-map>
         </b-tab>
@@ -17,9 +17,15 @@
         </b-tab>
       </b-tabs>
       <!--Mobile Device-->
-      <b-tabs small v-if="!loading && isMobileDevice">
-
+      <b-tabs small v-if="isMobileDevice">
+        <b-tab title="General map" >
+          <bad-map class="gmap" :badmintonInfos="filteredBadmintonInfos" :center="currentLocation" ></bad-map>
+        </b-tab>
+        <b-tab title="List Location Info" active>
+          <bad-table :badmintonInfos="filteredBadmintonInfos"></bad-table>
+        </b-tab>
       </b-tabs>
+
     </div>
   </div>
 </template>
@@ -29,6 +35,7 @@ import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import BadMap from '@/components/BadMap'
 import BadTable from '@/components/BadTable'
 import MobileDetect from 'mobile-detect'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'app',
@@ -36,6 +43,25 @@ export default {
     PulseLoader,
     BadMap,
     BadTable
+  },
+  computed: {
+    selectedDays: {
+      get () {
+        return this.$store.state.selectedDays
+      },
+      set (value) {
+        this.changeSelectedDays(value)
+      }
+    },
+    selectedTime: {
+      get () {
+        return this.$store.state.selectedTime
+      },
+      set (value) {
+        this.changeSelectDaysTime(value)
+      }
+    }
+
   },
   async created () {
     try {
@@ -50,12 +76,7 @@ export default {
         badmintonInfo.location = locationInfos.find(({ name }) => badmintonInfo.location === name)
         return badmintonInfo
       })
-      var today = new Date()
       this.loading = false
-      this.todayWeekday = today.getDay()
-      // default 2 days
-      this.selectedDays.push(this.todayWeekday)
-      this.selectedDays.push(this.todayWeekday + 1 > 6 ? 0 : this.todayWeekday + 1)
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(({ 'coords': { 'latitude': lat, 'longitude': lng } }) => {
           this.currentLocation = { lat, lng }
@@ -74,8 +95,6 @@ export default {
       todayWeekday: 1,
       badmintonInfos: [],
       filteredBadmintonInfos: [],
-      selectedDays: [],
-      selectedTime: '',
       startTimeOptions: [
         { text: '整天', value: '' },
         { text: '中午十二點前', value: { from: 0, to: 12 } },
@@ -87,6 +106,10 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'changeSelectedDays',
+      'changeSelectDaysTime'
+    ]),
     setFilteredBadmintonInfos () {
       this.filteredBadmintonInfos = this.badmintonInfos
         .filter(({ weekDayInt, startHour }) => {
