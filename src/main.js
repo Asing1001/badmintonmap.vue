@@ -2,7 +2,6 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import 'babel-polyfill'
 import Vue from 'vue'
-import Vuex from 'vuex'
 import App from './App'
 import router from './router'
 import BootstrapVue from 'bootstrap-vue'
@@ -10,7 +9,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import store from './store'
 
-Vue.use(Vuex)
 Vue.use(BootstrapVue)
 
 Vue.config.productionTip = false
