@@ -35,7 +35,7 @@ import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import BadMap from '@/components/BadMap'
 import BadTable from '@/components/BadTable'
 import MobileDetect from 'mobile-detect'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'app',
@@ -45,20 +45,26 @@ export default {
     BadTable
   },
   computed: {
+    ...mapGetters([
+      'getSelectedDays',
+      'getSelectedTime'
+    ]),
     selectedDays: {
       get () {
-        return this.$store.state.selectedDays
+        return this.getSelectedDays
       },
       set (value) {
         this.changeSelectedDays(value)
+        this.setFilteredBadmintonInfos()
       }
     },
     selectedTime: {
       get () {
-        return this.$store.state.selectedTime
+        return ''
       },
       set (value) {
         this.changeSelectDaysTime(value)
+        this.setFilteredBadmintonInfos()
       }
     }
 
@@ -125,11 +131,6 @@ export default {
       })
       this.setFilteredBadmintonInfos()
     }
-  },
-  watch: {
-    selectedDays: 'setFilteredBadmintonInfos',
-    selectedTime: 'setFilteredBadmintonInfos'
-
   }
 }
 
