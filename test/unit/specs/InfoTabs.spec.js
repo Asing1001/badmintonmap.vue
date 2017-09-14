@@ -5,13 +5,12 @@ import store from '../../../src/store'
 describe('InfoTabs.vue', () => {
   it('should have two tabs', function (done) {
     this.timeout(20000)
-    const Constructor = new Vue({
+    const vm = new Vue({
       store,
       components: {
         'InfoTabs': InfoTabs
       }
-    })
-    const vm = new Constructor().$mount()
+    }).$mount()
     vm.loading = false
     Vue.nextTick(() => {
       expect(vm.$el.querySelectorAll('b-tab').length)
