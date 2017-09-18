@@ -60,7 +60,7 @@ export default {
     },
     selectedTime: {
       get () {
-        return ''
+        return this.getSelectedTime
       },
       set (value) {
         this.changeSelectDaysTime(value)

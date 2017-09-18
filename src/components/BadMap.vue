@@ -4,7 +4,7 @@
       <gmap-cluster>
         <gmap-marker v-for="(location,index) in getLocations()" @click="showModal(location)" :key="index" :position="location.position" :label="location.name" :clickable="true"></gmap-marker>
       </gmap-cluster>
-      <gmap-marker    :position="center" label="現在選擇的位置" >
+      <gmap-marker :position="center" label="右鍵切換位置" >
       </gmap-marker>
     </gmap-map>
     <b-modal ref="modal" title="Location" @ok="handleOk" ok-only size="lg">

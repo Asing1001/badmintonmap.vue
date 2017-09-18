@@ -1,14 +1,14 @@
 <template>
   <b-table striped hover :items="badmintonInfos" :fields="badmintonFields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc">
-    <template slot="location" scope="row">{{row.value.name}}</template>
+    <template slot="location" scope="row"><a :href="'https://maps.google.com?q='+row.value.name">{{row.value.name}}</a></template>
     <template slot="distance" scope="row">{{row.value}}</template>
     <template slot="weekDay" scope="row">{{row.value}}</template>
     <template slot="startTime" scope="row">{{row.value}}</template>
     <template slot="endTime" scope="row">{{row.value}}</template>
     <template slot="payInfo" scope="row">{{row.value}}</template>
     <template slot="contactName" scope="row">{{row.value}}</template>
-    <template slot="contactPhone" scope="row">{{row.value}}</template>
-    <template slot="line" scope="row">{{row.value}}</template>
+    <template slot="contactPhone" scope="row"><a :href="'tel:'+row.value">{{row.value}}</a></template>
+    <template slot="line" scope="row"><a target="_blank" :href="row.value">{{row.value.indexOf('~')!==-1 ? row.value.split('~')[1] : row.value}}</a></template>
   </b-table>
 </template>
 
