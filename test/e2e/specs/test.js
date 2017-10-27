@@ -12,8 +12,7 @@ module.exports = {
       .url(devServer)
       .waitForElementVisible('#app', 5000)
       .assert.elementPresent('header')
-      .assert.containsText('span', 'Badminton map - 羽球地圖')
-      // .assert.elementCount('img', 1)
+      // .assert.containsText('span', 'Badminton map - 羽球地圖')
       .end()
   }
 }
