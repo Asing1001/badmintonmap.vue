@@ -1,14 +1,13 @@
 <template>
   <div id="app">
     <header>
-      <span class="d-none d-lg-block d-xl-block">Badminton map - 羽球地圖</span>
-      <b-navbar style="z-index:2" class="d-lg-none d-xl-none" type="dark">
-        Badminton map - 羽球地圖
+      <b-navbar toggleable="md" style="z-index:2" type="dark" variant="info">
+        <b-navbar-brand href="#">Badminton map - 羽球地圖</b-navbar-brand>
         <b-nav-toggle target="nav_collapse"></b-nav-toggle>
         <b-collapse is-nav id="nav_collapse">
           <b-nav is-nav-bar>
             <b-nav-form>
-              <b-button size="md" v-on:click="showSelectTime">Filter Select</b-button>
+              <b-button size="md" class="d-lg-none d-xl-none" v-on:click="showSelectTime">Selection Filter</b-button>
             </b-nav-form>
           </b-nav>
         </b-collapse>
@@ -93,7 +92,6 @@ header {
   margin: 0;
   height: 56px;
   background-color: #4fc08d;
-  padding: 0 16px 0 24px;
   color: #ffffff;
 }
 
@@ -110,6 +108,10 @@ header span {
 
 .modal-body {
   overflow: auto;
+}
+
+.bg-info {
+  background-color: #4fc08d!important;
 }
 
 @media (max-width: $mobile) {
