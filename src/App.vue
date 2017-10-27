@@ -2,7 +2,7 @@
   <div id="app">
     <header>
       <span class="d-none d-lg-block d-xl-block">Badminton map - 羽球地圖</span>
-      <b-navbar style="z-index:2" class="d-lg-none d-xl-none" type="dark" variant="info">
+      <b-navbar style="z-index:2" class="d-lg-none d-xl-none" type="dark">
         Badminton map - 羽球地圖
         <b-nav-toggle target="nav_collapse"></b-nav-toggle>
         <b-collapse is-nav id="nav_collapse">
