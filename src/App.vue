@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <header v-bind:class="{'mobileheader': isMobileDevice}">
-      <span v-if="isMobileDevice ==false" >Badminton map - 羽球地圖</span>
-      <b-navbar style="z-index:300" v-if="isMobileDevice" type="dark" variant="info">
+    <header>
+      <span class="d-none d-lg-block d-xl-block">Badminton map - 羽球地圖</span>
+      <b-navbar style="z-index:2" class="d-lg-none d-xl-none" type="dark" variant="info">
         Badminton map - 羽球地圖
         <b-nav-toggle target="nav_collapse"></b-nav-toggle>
         <b-collapse is-nav id="nav_collapse">
@@ -11,16 +11,14 @@
               <b-button size="md" v-on:click="showSelectTime">Filter Select</b-button>
             </b-nav-form>
           </b-nav>
-
         </b-collapse>
       </b-navbar>
-
     </header>
     <main>
       <b-modal ref="dateSelector" title="日期" ok-only size="sm">
         <mobile-select-time :weekDaysOptions="weekDaysOptions"  :startTimeOptions="startTimeOptions"  > </mobile-select-time>
       </b-modal>
-      
+
       <router-view></router-view>
     </main>
   </div>
@@ -28,7 +26,6 @@
 
 <script>
 
-import MobileDetect from 'mobile-detect'
 import MobileSelectTime from '@/components/MobileSelectTime'
 import { mapActions } from 'vuex'
 export default {
@@ -39,8 +36,6 @@ export default {
   async created () {
     try {
       var today = new Date()
-      var md = new MobileDetect(window.navigator.userAgent)
-      this.isMobileDevice = md.mobile() != null
       var todayWeekday = today.getDay()
       // default 2 days
       var selectedDays = []
@@ -54,7 +49,6 @@ export default {
   },
   data () {
     return {
-      isMobileDevice: false,
       weekDaysOptions: [{ 'label': '星期日', 'value': 0 }, { 'label': '星期一', 'value': 1 }, { 'label': '星期二', 'value': 2 }, { 'label': '星期三', 'value': 3 }, { 'label': '星期四', 'value': 4 }, { 'label': '星期五', 'value': 5 }, { 'label': '星期六', 'value': 6 }],
       startTimeOptions: [
         { text: '整天', value: '' },
@@ -76,7 +70,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import "./_vars.scss";
+
 body {
   margin: 0;
 }
@@ -100,13 +96,7 @@ header {
   padding: 0 16px 0 24px;
   color: #ffffff;
 }
-.mobileheader { 
-  padding: 0;
-  background-color: #17a2b8;
-  margin: 0;
-  height: 56px;
-  color: #ffffff;
-}
+
 header span {
   display: block;
   position: relative;
@@ -116,5 +106,15 @@ header span {
   font-weight: 400;
   box-sizing: border-box;
   padding-top: 16px;
+}
+
+.modal-body {
+  overflow: auto;
+}
+
+@media (max-width: $mobile) {
+  header {
+      padding: 0;
+  }
 }
 </style>

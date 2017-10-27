@@ -3,26 +3,19 @@
     <pulse-loader :loading="loading" style="margin-top:50px"></pulse-loader>
     <div v-if="!loading">
       <!--Website-->
-      <b-form inline v-if="isMobileDevice== false" style="margin-bottom:.5em">
+      <b-form inline class="d-none d-lg-flex d-xl-flex" style="margin-bottom:.5em">
         <b-form-checkbox v-for="(weekDay, index) in weekDaysOptions" :key="index" v-model="selectedDays"   :value="weekDay.value">{{weekDay.label}}</b-form-checkbox>
         <b-form-select  v-model="selectedTime" :options="startTimeOptions">
         </b-form-select>
       </b-form>
-      <b-tabs small v-if="isMobileDevice== false">
+      <b-tabs small>
         <b-tab title="General map" active>
           <bad-map class="gmap" :badmintonInfos="filteredBadmintonInfos" :center="currentLocation" @update="locationUpdate"></bad-map>
         </b-tab>
         <b-tab title="List Location Info">
-          <bad-table :badmintonInfos="filteredBadmintonInfos"></bad-table>
-        </b-tab>
-      </b-tabs>
-      <!--Mobile Device-->
-      <b-tabs small v-if="isMobileDevice">
-        <b-tab title="General map" >
-          <bad-map class="gmap" :badmintonInfos="filteredBadmintonInfos" :center="currentLocation" ></bad-map>
-        </b-tab>
-        <b-tab title="List Location Info" active>
-          <bad-table :badmintonInfos="filteredBadmintonInfos"></bad-table>
+          <div class="tab-wrapper">
+            <bad-table :badmintonInfos="filteredBadmintonInfos"></bad-table>
+          </div>
         </b-tab>
       </b-tabs>
 
@@ -34,7 +27,6 @@
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import BadMap from '@/components/BadMap'
 import BadTable from '@/components/BadTable'
-import MobileDetect from 'mobile-detect'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -71,8 +63,6 @@ export default {
   },
   async created () {
     try {
-      var md = new MobileDetect(window.navigator.userAgent)
-      this.isMobileDevice = md.mobile() != null
       const responses = await Promise.all([
         fetch(process.env.API_HOST + '/api/locationinfolist'),
         fetch(process.env.API_HOST + '/api/badmintoninfolist')]
@@ -107,8 +97,7 @@ export default {
         { text: '中午至下午六點', value: { from: 12, to: 18 } },
         { text: '晚上六點後', value: { from: 18, to: 24 } }
       ],
-      weekDaysOptions: [{ 'label': '星期日', 'value': 0 }, { 'label': '星期一', 'value': 1 }, { 'label': '星期二', 'value': 2 }, { 'label': '星期三', 'value': 3 }, { 'label': '星期四', 'value': 4 }, { 'label': '星期五', 'value': 5 }, { 'label': '星期六', 'value': 6 }],
-      isMobileDevice: false
+      weekDaysOptions: [{ 'label': '星期日', 'value': 0 }, { 'label': '星期一', 'value': 1 }, { 'label': '星期二', 'value': 2 }, { 'label': '星期三', 'value': 3 }, { 'label': '星期四', 'value': 4 }, { 'label': '星期五', 'value': 5 }, { 'label': '星期六', 'value': 6 }]
     }
   },
   methods: {
@@ -152,8 +141,16 @@ function getRadians (num) {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.gmap {
-  height: 600px;
+<style scoped lang="scss">
+@import "../_vars.scss";
+
+.tab-wrapper {
+  overflow: auto
+}
+
+@media (max-width: $mobile) {
+  #app{
+    padding: 0em
+  }
 }
 </style>

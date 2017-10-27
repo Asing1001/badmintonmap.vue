@@ -4,7 +4,7 @@
       <gmap-cluster>
         <gmap-marker v-for="(location,index) in getLocations()" @click="showModal(location)" :key="index" :position="location.position" :label="location.name" :clickable="true"></gmap-marker>
       </gmap-cluster>
-      <gmap-marker :position="center" label="右鍵切換位置" >
+      <gmap-marker v-if="!isMobileDevice" :position="center" label="右鍵切換位置" >
       </gmap-marker>
     </gmap-map>
     <b-modal ref="modal" title="Location" @ok="handleOk" ok-only size="lg">
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import MobileDetect from 'mobile-detect'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import Vue from 'vue'
 import BadTable from '@/components/BadTable'
@@ -26,6 +27,8 @@ Vue.use(VueGoogleMaps, {
   }
 })
 
+const md = new MobileDetect(window.navigator.userAgent)
+
 export default {
   props: ['badmintonInfos', 'center'],
   components: {
@@ -35,7 +38,8 @@ export default {
     return {
       zoom: 15,
       selectedBadmintonInfos: [],
-      isCurrenctLocationOpen: true
+      isCurrenctLocationOpen: true,
+      isMobileDevice: md.mobile() != null
     }
   },
   methods: {
@@ -61,8 +65,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "../_vars.scss";
 .gmap {
   height: 600px;
 }
+
+@media (max-width: $mobile) {
+  .gmap {
+    height: calc(100vh - 109px);
+  }
+}
+
 </style>
