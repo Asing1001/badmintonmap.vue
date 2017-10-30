@@ -1,9 +1,9 @@
 <template>
   <b-table :sort-compare="sortCompare" striped hover :items="badmintonInfos" :fields="badmintonFields" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc">
-    <template slot="location" scope="row"><a :href="'https://maps.google.com?q='+row.value.name">{{row.value.name}}</a></template>
-    <template slot="contactPhone" scope="row"><a :href="'tel:'+row.value">{{row.value}}</a></template>
-    <template slot="time" scope="row">{{`${row.item.startTime}~${row.item.endTime}`}}</template>
-    <template slot="line" scope="row">
+    <template slot="location" slot-scope="row"><a :href="'https://maps.google.com?q='+row.value.name">{{row.value.name}}</a></template>
+    <template slot="contactPhone" slot-scope="row"><a :href="'tel:'+row.value">{{row.value}}</a></template>
+    <template slot="time" slot-scope="row">{{`${row.item.startTime}~${row.item.endTime}`}}</template>
+    <template slot="line" slot-scope="row">
       <a target="_blank" :href="row.value" v-if="row.value">
         <span class="d-none d-lg-block d-lg-block">{{row.value.indexOf('~')!==-1 ? row.value.split('~')[1] : row.value}}</span>
         <img class="d-lg-none d-xl-none" width="30px" src="../assets/line.png" alt="">
