@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header>
-      <b-navbar toggleable="md" style="z-index:2" type="dark" variant="info">
+      <b-navbar toggleable="md" style="z-index:2" type="dark">
         <b-navbar-brand href="#">Badminton map - 羽球地圖</b-navbar-brand>
         <b-nav-toggle target="nav_collapse"></b-nav-toggle>
         <b-collapse is-nav id="nav_collapse">
@@ -93,25 +93,13 @@ header {
   height: 56px;
   background-color: #4fc08d;
   color: #ffffff;
-}
-
-header span {
-  display: block;
-  position: relative;
-  font-size: 20px;
-  line-height: 1;
-  letter-spacing: .02em;
-  font-weight: 400;
-  box-sizing: border-box;
-  padding-top: 16px;
+  nav {
+    background-color: #4fc08d!important;
+  }
 }
 
 .modal-body {
   overflow: auto;
-}
-
-.bg-info {
-  background-color: #4fc08d!important;
 }
 
 @media (max-width: $mobile) {
