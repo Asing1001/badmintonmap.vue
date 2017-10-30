@@ -20,7 +20,7 @@ export default {
       sortBy: null,
       sortDesc: false,
       badmintonFields: {
-        location: { label: '地點', class: 'text-center', sortable: true },
+        location: { label: '地點', class: 'text-center' },
         distance: { label: '距離(KM)', class: 'text-center', sortable: true },
         weekDay: { label: '星期', class: 'text-center', sortable: true },
         time: { label: '時間', class: 'text-center', sortable: true },
@@ -38,6 +38,12 @@ export default {
       return [...new Set(locations)]
     },
     sortCompare (a, b, key) {
+      if (key === 'time') {
+        if (a['startTime'] === b['startTime']) {
+          return a['endTime'] > b['endTime'] ? -1 : 1
+        }
+        return a['startTime'] > b['startTime'] ? -1 : 1
+      }
       return a[key] > b[key] ? -1 : 1
     }
   }
