@@ -29,3 +29,4 @@ env:
   global:
     - GH_REF: github.com/Asing1001/badmintonmap.vue.git
     - PACKAGE_FOLDER: mypackages
+    - API_HOST: https://badmap-api.mvrater.com

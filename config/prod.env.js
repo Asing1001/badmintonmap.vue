@@ -1,4 +1,4 @@
 module.exports = {
   NODE_ENV: '"production"',
-  API_HOST: '"https://qatbadmap.herokuapp.com"'
+  API_HOST: JSON.stringify(process.env.API_HOST) || '"https://badmap-api.mvrater.com"'
 }
