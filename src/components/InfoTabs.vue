@@ -1,10 +1,10 @@
 <template>
-  <div id="app" class="col-12">
+  <div class="col-12">
     <pulse-loader :loading="loading" style="margin-top:50px"></pulse-loader>
     <div v-if="!loading">
       <!--Website-->
       <b-form inline class="d-none d-lg-flex d-xl-flex" style="margin-bottom:.5em">
-        <b-form-checkbox v-for="(weekDay, index) in weekDaysOptions" :key="index" v-model="selectedDays"   :value="weekDay.value">{{weekDay.label}}</b-form-checkbox>
+        <b-form-checkbox v-for="(weekDay, index) in weekDaysOptions" :key="index" v-model="selectedDays" :value="weekDay.value">{{weekDay.label}}</b-form-checkbox>
         <b-form-select  v-model="selectedTime" :options="startTimeOptions">
         </b-form-select>
       </b-form>
@@ -30,7 +30,6 @@ import BadTable from '@/components/BadTable'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: 'app',
   components: {
     PulseLoader,
     BadMap,
