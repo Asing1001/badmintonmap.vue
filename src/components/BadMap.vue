@@ -1,10 +1,10 @@
 <template>
   <div>
-    <gmap-map :center="center" :zoom="zoom" class="gmap" @rightclick="mapRclicked">
+    <gmap-map :center="center" :zoom="zoom" class="gmap" >
       <gmap-cluster>
         <gmap-marker v-for="(location,index) in getLocations()" @click="showModal(location)" :key="index" :position="location.position" :label="location.name" :clickable="true"></gmap-marker>
       </gmap-cluster>
-      <gmap-marker v-if="!isMobileDevice" :position="center" label="右鍵切換位置" >
+      <gmap-marker v-if="!isMobileDevice" :position="center" label="目前位置" :draggable="true" @dragend="dragEndHandler">
       </gmap-marker>
     </gmap-map>
     <b-modal ref="modal" title="Location" @ok="handleOk" ok-only size="lg">
@@ -30,11 +30,11 @@ Vue.use(VueGoogleMaps, {
 const md = new MobileDetect(window.navigator.userAgent)
 
 export default {
-  props: ['badmintonInfos', 'center'],
+  props: ['badmintonInfos', 'center', 'onDragEnd'],
   components: {
     BadTable
   },
-  data () {
+  data: function () {
     return {
       zoom: 15,
       selectedBadmintonInfos: [],
@@ -56,10 +56,8 @@ export default {
       })
       this.$refs.modal.show()
     },
-    mapRclicked (mouseArgs) {
-      this.center.lat = mouseArgs.latLng.lat()
-      this.center.lng = mouseArgs.latLng.lng()
-      this.$emit('update', this.center)
+    dragEndHandler ({latLng: {lat, lng}}) {
+      this.onDragEnd({lat: lat(), lng: lng()})
     }
   }
 }

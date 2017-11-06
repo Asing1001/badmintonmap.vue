@@ -10,7 +10,7 @@
       </b-form>
       <b-tabs small>
         <b-tab title="General map" active>
-          <bad-map class="gmap" :badmintonInfos="filteredBadmintonInfos" :center="currentLocation" @update="locationUpdate"></bad-map>
+          <bad-map class="gmap" :badmintonInfos="filteredBadmintonInfos" :center="currentLocation" :onDragEnd="locationUpdate"></bad-map>
         </b-tab>
         <b-tab title="List Location Info">
           <div class="tab-wrapper">
@@ -73,10 +73,10 @@ export default {
       })
       this.loading = false
       if ('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition(({ 'coords': { 'latitude': lat, 'longitude': lng } }) => {
-          this.currentLocation = { lat, lng }
+        navigator.geolocation.getCurrentPosition(({ coords: { latitude: lat, longitude: lng } }) => {
+          this.currentLocation = { lng, lat }
+          this.locationUpdate(this.currentLocation)
         })
-        this.locationUpdate(this.currentLocation)
       }
       this.setFilteredBadmintonInfos()
     } catch (ex) {
@@ -112,10 +112,9 @@ export default {
           return inSelectedDays && inSelectedTime
         })
     },
-    locationUpdate (val) {
-      var self = this
+    locationUpdate ({lng, lat}) {
       this.badmintonInfos.forEach(badmintonInfo => {
-        badmintonInfo.distance = getDistanceInKM(self.currentLocation['lng'], self.currentLocation['lat'], badmintonInfo.location.position.lng, badmintonInfo.location.position.lat)
+        badmintonInfo.distance = getDistanceInKM(lng, lat, badmintonInfo.location.position.lng, badmintonInfo.location.position.lat)
       })
       this.setFilteredBadmintonInfos()
     }
