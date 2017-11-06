@@ -7,15 +7,15 @@
         <b-collapse is-nav id="nav_collapse">
           <b-nav is-nav-bar>
             <b-nav-form>
-              <b-button size="md" class="d-lg-none d-xl-none" v-on:click="showSelectTime">Selection Filter</b-button>
+              <b-button class="d-lg-none d-xl-none" v-b-modal.filter v-b-toggle.nav_collapse>Selection Filter</b-button>
             </b-nav-form>
           </b-nav>
         </b-collapse>
       </b-navbar>
     </header>
     <main>
-      <b-modal ref="dateSelector" title="日期" ok-only size="sm">
-        <mobile-select-time :weekDaysOptions="weekDaysOptions"  :startTimeOptions="startTimeOptions"  > </mobile-select-time>
+      <b-modal id="filter" title="日期" ok-only size="sm">
+        <mobile-select-time :weekDaysOptions="weekDaysOptions"  :startTimeOptions="startTimeOptions"> </mobile-select-time>
       </b-modal>
 
       <router-view></router-view>
@@ -61,10 +61,7 @@ export default {
     ...mapActions([
       'changeSelectedDays',
       'changeSelectDaysTime'
-    ]),
-    showSelectTime () {
-      this.$refs.dateSelector.show()
-    }
+    ])
   }
 }
 </script>
