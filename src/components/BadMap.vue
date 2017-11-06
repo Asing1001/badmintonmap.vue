@@ -2,9 +2,13 @@
   <div>
     <gmap-map :center="center" :zoom="zoom" class="gmap" >
       <gmap-cluster>
-        <gmap-marker v-for="(location,index) in getLocations()" @click="showModal(location)" :key="index" :position="location.position" :label="location.name" :clickable="true"></gmap-marker>
+        <gmap-marker v-for="(location,index) in getLocations()" :label="{text:location.name, fontWeight:'bold'}" @click="showModal(location)" :key="index" :position="location.position" :clickable="true">
+          <!-- <gmap-info-window :options="infoOptions" :position="location.position" :opened="true">
+          {{location.name}}
+        </gmap-info-window> -->
+        </gmap-marker>
       </gmap-cluster>
-      <gmap-marker :position="center" label="目前位置" :draggable="true" @dragend="dragEndHandler">
+      <gmap-marker :position="center" :label="{text:'目前位置', fontWeight:'bold'}" :draggable="true" @dragend="dragEndHandler">
       </gmap-marker>
     </gmap-map>
     <b-modal ref="modal" title="Location" @ok="handleOk" ok-only size="lg">
@@ -34,8 +38,7 @@ export default {
   data: function () {
     return {
       zoom: 15,
-      selectedBadmintonInfos: [],
-      isCurrenctLocationOpen: true
+      selectedBadmintonInfos: []
     }
   },
   methods: {
